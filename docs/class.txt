@@ -1,0 +1,147 @@
+Model Layer ---------
+class Power:
+    private string name
+    private string power
+    private int damage
+    private int choosePower
+
+class Mutant:
+    private string team
+    private string icon
+    private color HexColor
+    private int defense
+    private int level
+    private int radius
+    private int energy
+    private int life
+    private Power power
+    
+
+
+Game Layer --------------------
+
+class Battlefield:
+    private int NumberOfParticipants
+    private vector<Team> Team1
+    private int Score1
+    private vector<Team> Team2
+    private int Score2
+    private int Height
+    private int Width
+    private List Battlefield
+
+class Team:
+    private Mutant Character
+    private bool Alive
+
+
+Control Layer ---------------
+
+class position:
+    private int x;
+    private int y;
+
+class Movement:
+    private position pos;
+    private int moveX
+    private int moveY
+
+class Combat:
+    private int AttackDefendNothing
+    private bool EnemyInRadius
+
+
+UI Layer ---------------------
+
+class GameCanvas:
+    battlefield: Battlefield 
+    aliveMutants: List<Mutant> 
+    icon text
+    showCombatRadius: boolean 
+    
+Class ScoreboardPannel:
+    teamAScoreLabel: JLabel
+    teamBScoreLabel: JLabel
+    winnerAnnouncementLabel: JLabel
+    teamAColorIndicator: Color
+    teamBColorIndicator: Color
+
+class GameFrame:
+    canvasPanel: GameCanvas 
+    scoreboardPanel: ScoreboardPanel
+    frameTitle: String
+    windowWidth: int
+    windowHeight: int 
+    renderTimer: Timer 
+
+
+Help of AI ********
+
+Model Layer ---------
+class Power:
+private int damage
+private int life
+
+class Mutant:
+private int energy
+private int defense
+private Power power
+private bool isAlive
+
+Game Layer --------------------
+
+class Battlefield:
+private int maxTeamSize
+private Team team1
+private Team team2
+private int width
+private int height
+
+class Team:
+private string color
+private string symbol
+private list mutants
+private int aliveCount
+private int deadCount
+
+Control Layer ---------------
+
+class Position:
+private int x
+private int y
+
+class Movement:
+private Position position
+private int speed
+
+class Combat:
+private int detectionRadius
+
+class MutantThread:
+private Mutant mutant
+private Movement movement
+private bool isRunning
+
+
+UI Layer ---------------------
+
+class GameCanvas:
+    battlefield: Battlefield 
+    aliveMutants: List<Mutant> 
+    icon text
+    showCombatRadius: boolean 
+    
+Class ScoreboardPannel:
+    teamAScoreLabel: JLabel
+    teamBScoreLabel: JLabel
+    winnerAnnouncementLabel: JLabel
+    teamAColorIndicator: Color
+    teamBColorIndicator: Color
+
+class GameFrame:
+    canvasPanel: GameCanvas 
+    scoreboardPanel: ScoreboardPanel
+    frameTitle: String
+    windowWidth: int
+    windowHeight: int 
+    renderTimer: Timer 
