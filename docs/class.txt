@@ -1,147 +1,141 @@
 Model Layer ---------
-class Power:
-    private string name
-    private string power
-    private int damage
-    private int choosePower
-
-class Mutant:
-    private string team
-    private string icon
-    private color HexColor
-    private int defense
-    private int level
-    private int radius
-    private int energy
-    private int life
-    private Power power
-    
-
-
-Game Layer --------------------
-
-class Battlefield:
-    private int NumberOfParticipants
-    private vector<Team> Team1
-    private int Score1
-    private vector<Team> Team2
-    private int Score2
-    private int Height
-    private int Width
-    private List Battlefield
-
-class Team:
-    private Mutant Character
-    private bool Alive
-
-
-Control Layer ---------------
-
-class position:
-    private int x;
-    private int y;
-
-class Movement:
-    private position pos;
-    private int moveX
-    private int moveY
-
-class Combat:
-    private int AttackDefendNothing
-    private bool EnemyInRadius
-
-
-UI Layer ---------------------
-
-class GameCanvas:
-    battlefield: Battlefield 
-    aliveMutants: List<Mutant> 
-    icon text
-    showCombatRadius: boolean 
-    
-Class ScoreboardPannel:
-    teamAScoreLabel: JLabel
-    teamBScoreLabel: JLabel
-    winnerAnnouncementLabel: JLabel
-    teamAColorIndicator: Color
-    teamBColorIndicator: Color
-
-class GameFrame:
-    canvasPanel: GameCanvas 
-    scoreboardPanel: ScoreboardPanel
-    frameTitle: String
-    windowWidth: int
-    windowHeight: int 
-    renderTimer: Timer 
-
-
-Help of AI ********
-
+interface Power:
 Model Layer ---------
-class Power:
-private int damage
-private int life
+interface Power:
+    +getName(): String
+    +getDamage(): int
+    +increaseDamage(): void
 
-class Mutant:
-private int energy
-private int defense
-private Power power
-private bool isAlive
+interface Mutant:
+    +getEnergy(): int
+    +getDefense(): int
+    +getPower(): Power
+    +isAlive(): boolean
+    +receiveDamage(int): void
+    +increasePower(): void
+
+abstract class BaseMutant implements Mutant:
+    -energy: int
+    -defense: int
+    -power: Power
+    -alive: boolean
+    -position: Position
+    -team: Team
+    -icon: char
+
+class SuperHuman extends BaseMutant
+class Archer extends BaseMutant
+class Monster extends BaseMutant
+class Dragon extends BaseMutant
+class Heterodactyl extends BaseMutant
+
+class WindBarrier implements Power
+class FlameThrower implements Power
+class BowShot implements Power
+class SwordStrike implements Power
+class DefenseBlow implements Power
+class Evade implements Power
+
+Power <|.. WindBarrier
+Power <|.. FlameThrower
+Power <|.. BowShot
+Power <|.. SwordStrike
+Power <|.. DefenseBlow
+Power <|.. Evade
+BaseMutant o-- Power
 
 Game Layer --------------------
-
 class Battlefield:
-private int maxTeamSize
-private Team team1
-private Team team2
-private int width
-private int height
+    -maxTeamSize: int
+    -team1: Team
+    -team2: Team
+    -width: int
+    -height: int
+    +isFinished(): boolean
+    +getWinner(): Team
 
 class Team:
-private string color
-private string symbol
-private list mutants
-private int aliveCount
-private int deadCount
+    -color: Color
+    -symbol: char
+    -mutants: List<Mutant>
+    +getAliveCount(): int
+    +getDeadCount(): int
+
+Battlefield *-- Team
+Team o-- Mutant
 
 Control Layer ---------------
-
 class Position:
-private int x
-private int y
+    -x: int
+    -y: int
+    +distanceTo(Position): double
 
 class Movement:
-private Position position
-private int speed
+    -position: Position
+    -speed: int
+    +moveWithin(int, int): void
+
+enum CombatDecision {
+    ATTACK
+    DEFEND
+}
 
 class Combat:
-private int detectionRadius
+    -detectionRadius: int
+    +resolve(Mutant, Mutant): void
+    +areInRange(Mutant, Mutant): boolean
 
-class MutantThread:
-private Mutant mutant
-private Movement movement
-private bool isRunning
+class MutantThread implements Runnable:
+    -mutant: Mutant
+    -movement: Movement
+    -running: boolean
+    +run(): void
+    +stop(): void
 
+Mutant o-- Position
+MutantThread o-- Mutant
+MutantThread o-- Movement
+Combat ..> Mutant
 
 UI Layer ---------------------
+interface BattleObserver:
+    +onBattleUpdated(BattleSnapshot): void
 
-class GameCanvas:
-    battlefield: Battlefield 
-    aliveMutants: List<Mutant> 
-    icon text
-    showCombatRadius: boolean 
-    
-Class ScoreboardPannel:
-    teamAScoreLabel: JLabel
-    teamBScoreLabel: JLabel
-    winnerAnnouncementLabel: JLabel
-    teamAColorIndicator: Color
-    teamBColorIndicator: Color
+class BattleSnapshot:
+    +getMutants(): List<Mutant>
+    +getTeamScores(): Map
+    +getWinner(): Team
+
+class GameController:
+    -battlefield: Battlefield
+    -battleRunning: boolean
+    +startBattle(int): void
+    +restartBattle(): void
+    +stopBattle(): void
+
+class GameCanvas implements BattleObserver:
+    -snapshot: BattleSnapshot
+    -showCombatRadius: boolean
+    +onBattleUpdated(BattleSnapshot): void
+    +paint(): void
+
+class ScoreboardPanel implements BattleObserver:
+    -teamAScoreLabel: JLabel
+    -teamBScoreLabel: JLabel
+    -winnerAnnouncementLabel: JLabel
+    +onBattleUpdated(BattleSnapshot): void
 
 class GameFrame:
-    canvasPanel: GameCanvas 
-    scoreboardPanel: ScoreboardPanel
-    frameTitle: String
-    windowWidth: int
-    windowHeight: int 
-    renderTimer: Timer 
+    -canvasPanel: GameCanvas
+    -scoreboardPanel: ScoreboardPanel
+    -renderTimer: Timer
+    +restart(): void
+
+GameController o-- Battlefield
+GameController --> BattleObserver
+GameCanvas ..|> BattleObserver
+ScoreboardPanel ..|> BattleObserver
+GameFrame *-- GameCanvas
+GameFrame *-- ScoreboardPanel
+GameFrame --> GameController
+BattleObserver ..> BattleSnapshot

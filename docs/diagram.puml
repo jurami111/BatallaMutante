@@ -1,0 +1,174 @@
+@startuml BatallaMutante
+title Batalla Mutante - Class Diagram
+
+!pragma layout smetana
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+package "Model Layer" {
+	interface Power {
+		+getName(): String
+		+getDamage(): int
+		+increaseDamage(): void
+	}
+
+	interface Mutant {
+		+getEnergy(): int
+		+getDefense(): int
+		+getPower(): Power
+		+isAlive(): boolean
+		+receiveDamage(int): void
+		+increasePower(): void
+	}
+
+	abstract class BaseMutant {
+		-energy: int
+		-defense: int
+		-power: Power
+		-alive: boolean
+		-position: Position
+		-team: Team
+		-icon: char
+	}
+
+	class SuperHuman
+	class Archer
+	class Monster
+	class Dragon
+	class Heterodactyl
+
+	class WindBarrier
+	class FlameThrower
+	class BowShot
+	class SwordStrike
+	class DefenseBlow
+	class Evade
+
+	Mutant <|.. BaseMutant
+	BaseMutant <|-- SuperHuman
+	BaseMutant <|-- Archer
+	BaseMutant <|-- Monster
+	BaseMutant <|-- Dragon
+	BaseMutant <|-- Heterodactyl
+	Power <|.. WindBarrier
+	Power <|.. FlameThrower
+	Power <|.. BowShot
+	Power <|.. SwordStrike
+	Power <|.. DefenseBlow
+	Power <|.. Evade
+	BaseMutant o-- Power
+}
+
+package "Game Layer" {
+	class Battlefield {
+		-maxTeamSize: int
+		-team1: Team
+		-team2: Team
+		-width: int
+		-height: int
+		+isFinished(): boolean
+		+getWinner(): Team
+	}
+
+	class Team {
+		-color: Color
+		-symbol: char
+		-mutants: List<Mutant>
+		+getAliveCount(): int
+		+getDeadCount(): int
+	}
+
+	Battlefield *-- Team
+	Team o-- Mutant
+}
+
+package "Control Layer" {
+	class Position {
+		-x: int
+		-y: int
+		+distanceTo(Position): double
+	}
+
+	class Movement {
+		-position: Position
+		-speed: int
+		+moveWithin(int, int): void
+	}
+
+	enum CombatDecision {
+		ATTACK
+		DEFEND
+	}
+
+	class Combat {
+		-detectionRadius: int
+		+resolve(Mutant, Mutant): void
+		+areInRange(Mutant, Mutant): boolean
+	}
+
+	class MutantThread {
+		-mutant: Mutant
+		-movement: Movement
+		-running: boolean
+		+run(): void
+		+stop(): void
+	}
+
+	MutantThread ..|> Runnable
+	MutantThread o-- Mutant
+	MutantThread o-- Movement
+	Combat ..> Mutant
+	Mutant ..> Position
+}
+
+package "UI Layer" {
+	interface BattleObserver {
+		+onBattleUpdated(BattleSnapshot): void
+	}
+
+	class BattleSnapshot {
+		+getMutants(): List<Mutant>
+		+getTeamScores(): Map
+		+getWinner(): Team
+	}
+
+	class GameController {
+		-battlefield: Battlefield
+		-battleRunning: boolean
+		+startBattle(int): void
+		+restartBattle(): void
+		+stopBattle(): void
+	}
+
+	class GameCanvas {
+		-snapshot: BattleSnapshot
+		-showCombatRadius: boolean
+		+onBattleUpdated(BattleSnapshot): void
+		+paint(): void
+	}
+
+	class ScoreboardPanel {
+		-teamAScoreLabel: JLabel
+		-teamBScoreLabel: JLabel
+		-winnerAnnouncementLabel: JLabel
+		+onBattleUpdated(BattleSnapshot): void
+	}
+
+	class GameFrame {
+		-canvasPanel: GameCanvas
+		-scoreboardPanel: ScoreboardPanel
+		-renderTimer: Timer
+		+restart(): void
+	}
+
+	GameCanvas ..|> BattleObserver
+	ScoreboardPanel ..|> BattleObserver
+	GameController o-- Battlefield
+	GameController --> BattleObserver
+	GameFrame *-- GameCanvas
+	GameFrame *-- ScoreboardPanel
+	GameFrame --> GameController
+	BattleObserver ..> BattleSnapshot
+}
+
+@enduml
