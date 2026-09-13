@@ -1,7 +1,5 @@
 Model Layer ---------
 interface Power:
-Model Layer ---------
-interface Power:
     +getName(): String
     +getDamage(): int
     +increaseDamage(): void
@@ -21,7 +19,6 @@ abstract class BaseMutant implements Mutant:
     -alive: boolean
     -position: Position
     -team: Team
-    -icon: char
 
 class SuperHuman extends BaseMutant
 class Archer extends BaseMutant
@@ -34,7 +31,6 @@ class FlameThrower implements Power
 class BowShot implements Power
 class SwordStrike implements Power
 class DefenseBlow implements Power
-class Evade implements Power
 
 Power <|.. WindBarrier
 Power <|.. FlameThrower
