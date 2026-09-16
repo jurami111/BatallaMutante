@@ -30,6 +30,19 @@ public class BaseMutant {
         this.energy = Math.max(0, energy);
     }
 
+    public void receiveDamage(int damage) {
+        if (damage < 0) {
+            throw new IllegalArgumentException("El dano no puede ser negativo");
+        }
+        setEnergy(energy - damage);
+    }
+
+    public void increasePower() {
+        if (power != null) {
+            power.increaseLevel();
+        }
+    }
+
     public int getDefense() {
         return defense;
     }
