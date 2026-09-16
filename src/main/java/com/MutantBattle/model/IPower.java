@@ -7,6 +7,8 @@ public interface IPower {
 
     int getEnergyCost();
 
+    void increaseLevel();
+
     default String getAll() {
         return "damage=" + getDamage()
                 + ", level=" + getLevel()
