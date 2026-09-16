@@ -63,6 +63,9 @@ public class Team { // Representa un equipo en el juego, con nombre, símbolo, c
     }
 
     public void increaseScore(int points) { // Incrementa la puntuación del equipo en la cantidad de puntos especificada
+        if (points < 0) {
+            throw new IllegalArgumentException("Los puntos no pueden ser negativos");
+        }
         score += points;
     }
 
@@ -94,6 +97,6 @@ public class Team { // Representa un equipo en el juego, con nombre, símbolo, c
                 + ", symbol=" + symbol
                 + ", color=" + color
                 + ", mutants=" + mutants.size()
-                + ", aliveMutants=" + getAliveMutantsCount();
+                + ", aliveMutants=" + getAliveMutantsCount(); // Devuelve una representación en cadena de todos los atributos del equipo
     }
 }
