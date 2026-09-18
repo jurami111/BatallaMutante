@@ -25,31 +25,35 @@ public class BattlefieldFactory {
     }
 
     public Battlefield crearCampo(int teamSize) {
-        validarTamano(teamSize);
 
         Team equipoRojo = new Team("Rojo", "R", "red");
         Team equipoAzul = new Team("Azul", "A", "blue");
 
         for (int index = 1; index <= teamSize; index++) {
-            agregarMutante(equipoRojo, "Rojo", index);
-            agregarMutante(equipoAzul, "Azul", index);
+            agregarMutante(equipoRojo, "Rojo", index, true);
+            agregarMutante(equipoAzul, "Azul", index, false);
         }
 
-        return new Battlefield(
-                constants.BATTLEFIELD_WIDTH,
-                constants.BATTLEFIELD_HEIGHT,
-                equipoRojo,
-                equipoAzul);
+        return new Battlefield(constants.BATTLEFIELD_WIDTH, constants.BATTLEFIELD_HEIGHT, equipoRojo, equipoAzul);
     }
 
-    private void agregarMutante(Team team, String teamName, int number) {
+    private void agregarMutante(Team team, String teamName, int number, boolean ladoIzquierdo) {
         BaseMutant mutant = crearMutante(teamName + " " + number);
-        mutant.setDefense(constants.MIN_DEFENSE_CAPACITY
-                + random.nextInt(constants.MAX_DEFENSE_CAPACITY));
-        mutant.setPosition(new Position(
-                random.nextInt(constants.BATTLEFIELD_WIDTH),
-                random.nextInt(constants.BATTLEFIELD_HEIGHT)));
+        mutant.setDefense(constants.MIN_DEFENSE_CAPACITY + random.nextInt(constants.MAX_DEFENSE_CAPACITY));
+        mutant.setPosition(crearPosicionEnLado(ladoIzquierdo));
         team.addMutant(mutant);
+    }
+
+    // Reparte cada equipo en su mitad del campo, dejando un espacio central >= ENCOUNTER_RADIUS para evitar encuentros al iniciar
+    private Position crearPosicionEnLado(boolean ladoIzquierdo) {
+        int mitad = constants.BATTLEFIELD_WIDTH / 2;
+        int margen = constants.ENCOUNTER_RADIUS;
+        int anchoZona = mitad - margen;
+        int x = ladoIzquierdo
+                ? random.nextInt(anchoZona)
+                : mitad + margen + random.nextInt(anchoZona);
+        int y = random.nextInt(constants.BATTLEFIELD_HEIGHT);
+        return new Position(x, y);
     }
 
     private BaseMutant crearMutante(String name) {
@@ -67,11 +71,5 @@ public class BattlefieldFactory {
             return new Monster(name);
         }
         return new SuperHuman(name);
-    }
-
-    private void validarTamano(int teamSize) {
-        if (teamSize < constants.MIN_TEAM_SIZE || teamSize > constants.MAX_TEAM_SIZE) {
-            throw new IllegalArgumentException("El tamano debe estar entre 3 y 11");
-        }
     }
 }

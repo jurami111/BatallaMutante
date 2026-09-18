@@ -1,5 +1,6 @@
 package com.MutantBattle.control;
 
+import com.MutantBattle.config.constants;
 import java.util.Random;
 
 public class Movement { // Clase que representa el movimiento de un mutante dentro del campo de batalla
@@ -42,6 +43,26 @@ public class Movement { // Clase que representa el movimiento de un mutante dent
 
         int direccionX = random.nextInt(3) - 1;
         int direccionY = random.nextInt(3) - 1;
+        int nuevaX = limitar(position.getX() + direccionX * speed, width);
+        int nuevaY = limitar(position.getY() + direccionY * speed, height);
+
+        position.setX(nuevaX);
+        position.setY(nuevaY);
+    }
+
+    // Se acerca un paso hacia (targetX, targetY); ocasionalmente da un paso aleatorio para no ser 100% deterministico
+    public void moveTowards(int targetX, int targetY, int width, int height) {
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("El ancho y el alto deben ser positivos");
+        }
+
+        int direccionX = Integer.compare(targetX, position.getX());
+        int direccionY = Integer.compare(targetY, position.getY());
+        if (random.nextInt(100) < constants.MOVEMENT_JITTER_PERCENT) {
+            direccionX = random.nextInt(3) - 1;
+            direccionY = random.nextInt(3) - 1;
+        }
+
         int nuevaX = limitar(position.getX() + direccionX * speed, width);
         int nuevaY = limitar(position.getY() + direccionY * speed, height);
 

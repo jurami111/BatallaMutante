@@ -22,4 +22,6 @@ public final class constants {
 	public static final int MUTANT_SPEED = 5;
 	public static final int ENCOUNTER_RADIUS = 25;
 	public static final int REFRESH_RATE_MILLISECONDS = 100;
+	// Probabilidad (%) de ignorar el objetivo y dar un paso aleatorio, para que la persecucion no sea 100% deterministica
+	public static final int MOVEMENT_JITTER_PERCENT = 20;
 }

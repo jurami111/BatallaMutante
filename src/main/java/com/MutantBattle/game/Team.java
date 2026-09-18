@@ -14,16 +14,6 @@ public class Team { // Representa un equipo en el juego, con nombre, símbolo, c
     private final String color;
 
     public Team(String name, String symbol, String color) {// Constructor de la clase Team que inicializa el nombre, símbolo y color del equipo, y crea la lista de mutantes
-        if (name == null || name.trim().isEmpty()) { // Verifica que el nombre no sea nulo ni vacío
-            throw new IllegalArgumentException("El nombre del equipo no puede estar vacio");
-        }
-        if (symbol == null || symbol.trim().isEmpty()) { // verifica que el símbolo no sea nulo ni vacío
-            throw new IllegalArgumentException("El simbolo del equipo no puede estar vacio");
-        }
-        if (color == null || color.trim().isEmpty()) { // verifica que el color no sea nulo ni vacío
-            throw new IllegalArgumentException("El color del equipo no puede estar vacio");
-        }
-
         this.name = name;
         this.symbol = symbol;
         this.color = color;

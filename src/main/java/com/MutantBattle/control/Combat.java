@@ -2,6 +2,7 @@ package com.MutantBattle.control;
 
 import com.MutantBattle.config.constants;
 import com.MutantBattle.model.BaseMutant;
+import com.MutantBattle.ui.Console;
 import java.util.Random;
 
 public class Combat { // Clase que representa el combate entre mutantes
@@ -69,10 +70,15 @@ public class Combat { // Clase que representa el combate entre mutantes
         objetivo.receiveDamage(dano);
 
         if (objetivo.getEnergy() < energiaAnterior) {
+            Console.logEncounter(atacante, objetivo, dano);
             atacante.increasePower();
             if (atacante.getTeam() != null) {
                 atacante.getTeam().increaseScore(1);
             }
+        }
+
+        if (!objetivo.isAlive()) {
+            Console.logDeath(atacante, objetivo);
         }
     }
 
