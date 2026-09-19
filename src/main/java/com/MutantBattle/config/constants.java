@@ -22,4 +22,6 @@ public final class constants {
 	public static final int MUTANT_SPEED = 5;
 	public static final int ENCOUNTER_RADIUS = 25;
 	public static final int REFRESH_RATE_MILLISECONDS = 100;
+	public static final long MOVEMENT_STEP_INTERVAL_MILLISECONDS = 200;
+	public static final int ENCOUNTER_POOL_SIZE = 4;
 }

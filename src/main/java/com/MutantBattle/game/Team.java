@@ -8,7 +8,8 @@ import java.util.List;// Importa la interfaz List del paquete java.util (para ma
 public class Team { // Representa un equipo en el juego, con nombre, símbolo, color, puntuación y lista de mutantes
     // el final espara que los atributos no puedan ser modificados 
     private final String name;
-    private int score;
+    // volatile: garantiza que los hilos de combate vean el ultimo marcador
+    private volatile int score;
     private final String symbol;
     private final List<BaseMutant> mutants;
     private final String color;
@@ -62,7 +63,8 @@ public class Team { // Representa un equipo en el juego, con nombre, símbolo, c
         return Collections.unmodifiableList(mutants);
     }
 
-    public void increaseScore(int points) { // Incrementa la puntuación del equipo en la cantidad de puntos especificada
+    // synchronized: evita que dos hilos de combate incrementen el marcador al mismo tiempo
+    public synchronized void increaseScore(int points) { // Incrementa la puntuación del equipo en la cantidad de puntos especificada
         if (points < 0) {
             throw new IllegalArgumentException("Los puntos no pueden ser negativos");
         }
