@@ -45,10 +45,22 @@ public class Combat { // Clase que representa el combate entre mutantes
             return;
         }
 
-        CombatDecision firstDecision = decidir();
-        CombatDecision secondDecision = decidir();
-        ejecutarAtaque(firstMutant, secondMutant, firstDecision, secondDecision);
-        ejecutarAtaque(secondMutant, firstMutant, secondDecision, firstDecision);
+        // Bloquea siempre en el mismo orden (por id) para evitar deadlocks entre encuentros concurrentes
+        BaseMutant primerCandado = firstMutant.getId() < secondMutant.getId() ? firstMutant : secondMutant;
+        BaseMutant segundoCandado = primerCandado == firstMutant ? secondMutant : firstMutant;
+
+        synchronized (primerCandado) {
+            synchronized (segundoCandado) {
+                if (!firstMutant.isAlive() || !secondMutant.isAlive()) {
+                    return;
+                }
+
+                CombatDecision firstDecision = decidir();
+                CombatDecision secondDecision = decidir();
+                ejecutarAtaque(firstMutant, secondMutant, firstDecision, secondDecision);
+                ejecutarAtaque(secondMutant, firstMutant, secondDecision, firstDecision);
+            }
+        }
     }
 
     private CombatDecision decidir() {

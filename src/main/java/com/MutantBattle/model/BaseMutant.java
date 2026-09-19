@@ -3,19 +3,29 @@ package com.MutantBattle.model;
 import com.MutantBattle.config.constants;
 import com.MutantBattle.control.Position;
 import com.MutantBattle.game.Team;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BaseMutant {
+    private static final AtomicLong ID_GENERATOR = new AtomicLong(1);
+
+    private final long id;
     private final String name;
-    private int energy;
+    // volatile: garantiza que los hilos de combate vean el ultimo valor de energia
+    private volatile int energy;
     private int defense;
     private IPower power;
     private Position position;
     private Team team;
 
     public BaseMutant(String name) {
+        this.id = ID_GENERATOR.getAndIncrement();
         this.name = name;
         this.energy = constants.INITIAL_ENERGY;
         this.defense = constants.MIN_DEFENSE_CAPACITY;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -26,18 +36,19 @@ public class BaseMutant {
         return energy;
     }
 
-    public void setEnergy(int energy) {
+    public synchronized void setEnergy(int energy) {
         this.energy = Math.max(0, energy);
     }
 
-    public void receiveDamage(int damage) {
+    // synchronized: evita que dos combates concurrentes pisen el mismo cambio de energia
+    public synchronized void receiveDamage(int damage) {
         if (damage < 0) {
             throw new IllegalArgumentException("El dano no puede ser negativo");
         }
         setEnergy(energy - damage);
     }
 
-    public void increasePower() {
+    public synchronized void increasePower() {
         if (power != null) {
             power.increaseLevel();
         }
