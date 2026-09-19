@@ -17,20 +17,15 @@ Batalla-Mutante/
 ├── Main.java # Punto de entrada
 ├── config/
 │ └── constants.java # Constantes del juego
+
 ├── control/
-│ └── ControlMain.java # Controlador del juego
+│ └── Combat.java, Movement.java, Position.java # Combate y movimiento
 
 ├── game/
-
-│ └── GameMain.java # Lógica del juego
+│ └── Battlefield.java, BattlefieldFactory.java, Team.java # Campo de juego y equipos
 
 ├── model/
-
-│ └── ModelMain.java # Modelos de datos
-
-└── ui/
-
-└── UIMain.java # Interfaz de usuario
+│ └── BaseMutant.java, IPower.java, Attacks/, Mutants/ # Modelos de datos
 ```
 
 ## Cómo iniciar la aplicación
