@@ -56,19 +56,19 @@ public class BattleEngine {
     private List<MutantThread> crearHilos(Team team1, Team team2, EncounterDispatcher dispatcher) {
         List<MutantThread> hilos = new ArrayList<>();
         for (BaseMutant mutante : team1.getMutants()) {
-            hilos.add(crearHilo(mutante, dispatcher));
+            hilos.add(crearHilo(mutante, team2, dispatcher));
         }
         for (BaseMutant mutante : team2.getMutants()) {
-            hilos.add(crearHilo(mutante, dispatcher));
+            hilos.add(crearHilo(mutante, team1, dispatcher));
         }
         return hilos;
     }
 
-    private MutantThread crearHilo(BaseMutant mutante, EncounterDispatcher dispatcher) {
+    private MutantThread crearHilo(BaseMutant mutante, Team rival, EncounterDispatcher dispatcher) {
         return new MutantThread(mutante,
                 new Movement(mutante.getPosition(), constants.MUTANT_SPEED),
                 battlefield.getWidth(), battlefield.getHeight(),
-                dispatcher, stepIntervalMillis);
+                rival, dispatcher, stepIntervalMillis);
     }
 
     private void detener(List<MutantThread> hilos, EncounterDispatcher dispatcher) {

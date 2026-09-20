@@ -21,8 +21,8 @@ public class Console {
             Arrays.fill(row, '.');
         }
 
-        placeTeam(battlefield.getTeam1(), battlefield, grid, false);
-        placeTeam(battlefield.getTeam2(), battlefield, grid, false);
+        placeTeam(battlefield.getTeam1(), battlefield, grid);
+        placeTeam(battlefield.getTeam2(), battlefield, grid);
 
         System.out.println("\n--- Round " + round + " ---");
         for (char[] row : grid) {
@@ -46,7 +46,7 @@ public class Console {
     }
 
     // Coloca cada mutante vivo en su posicion escalada en la grilla, marcado en verde si esta en combate cercano
-    private static void placeTeam(Team team, Battlefield battlefield, char[][] grid, boolean inCombat) {
+    private static void placeTeam(Team team, Battlefield battlefield, char[][] grid) {
         for (BaseMutant mutant : team.getMutants()) {
             if (!mutant.isAlive()) {
                 continue;
@@ -61,8 +61,6 @@ public class Console {
 
     // Registra un encuentro de combate con colores y dano aplicado
     public static void logEncounter(BaseMutant attacker, BaseMutant defender, int damage) {
-        String attackerTeam = attacker.getTeam() != null ? attacker.getTeam().getName() : "sin equipo";
-        String defenderTeam = defender.getTeam() != null ? defender.getTeam().getName() : "sin equipo";
         String symbol = attacker.getTeam().getSymbol();
         String color = symbol.equals("R") ? RED : BLUE;
 
@@ -80,10 +78,5 @@ public class Console {
 
         System.out.println(attackerColor + attackerSymbol + RESET + " " + attacker.getName() +
                 " killed " + defenderColor + defenderSymbol + RESET + " " + defender.getName());
-    }
-
-    // Imprime el mapa de movimientos inicial
-    public static void printMovements(java.util.Map<BaseMutant, java.util.function.Function<?, ?>> movements) {
-        // This is used for debugging; typically disabled for normal play
     }
 }

@@ -90,20 +90,4 @@ public class BaseMutant {
     public boolean isAlive() {
         return energy > 0;
     }
-
-    public String getAll() {
-        return "name=" + name
-                + ", energy=" + energy
-                + ", defense=" + defense
-                + ", power={" + getPowerData() + "}"
-                + ", position={" + (position == null ? "none" : position.getAll()) + "}"
-                + ", team={" + (team == null ? "none" : team.getAll()) + "}";
-    }
-
-    private String getPowerData() {
-        if (power == null) {
-            return "none";
-        }
-        return "type=" + power.getClass().getSimpleName() + ", " + power.getAll();
-    }
 }

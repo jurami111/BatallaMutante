@@ -34,8 +34,4 @@ public class Position { //obtenemos la posicion en el plano cartesiano
         int deltaY = y - other.y;
         return Math.sqrt((double) deltaX * deltaX + (double) deltaY * deltaY);
     }
-
-    public String getAll() { // Devuelve una representación en cadena de la posición con las coordenadas x e y
-        return "x=" + getX() + ", y=" + getY(); // Representación en cadena de la posición
-    }
 }

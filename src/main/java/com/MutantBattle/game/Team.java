@@ -82,13 +82,4 @@ public class Team { // Representa un equipo en el juego, con nombre, símbolo, c
     public boolean isDefeated() { // Devuelve true si el equipo está derrotado (tiene mutantes pero ninguno está vivo)
         return !mutants.isEmpty() && !hasAliveMutants();
     }
-
-    public String getAll() { // Devuelve una representación en cadena de todos los atributos del equipo 
-        return "name=" + name
-                + ", score=" + score
-                + ", symbol=" + symbol
-                + ", color=" + color
-                + ", mutants=" + mutants.size()
-                + ", aliveMutants=" + getAliveMutantsCount(); // Devuelve una representación en cadena de todos los atributos del equipo
-    }
 }
