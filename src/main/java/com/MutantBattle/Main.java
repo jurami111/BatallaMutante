@@ -1,17 +1,20 @@
 package com.MutantBattle;
 
-import com.MutantBattle.ui.UIMain;
-import com.MutantBattle.model.ModelMain;
-import com.MutantBattle.game.GameMain;
-import com.MutantBattle.control.ControlMain;
-//Aca se va a controlar la ejecucion principal del juego
+//Ui Enhancement
+import com.MutantBattle.ui.GameView;
+import javax.swing.SwingUtilities;
+//Ui Enhancement
 
-public class Main{
-    public static void main(String[] args){
-        System.out.println("Welcome to the Mutant Battle!");
-        UIMain.uiMain();
-        ModelMain.modelMain();
-        GameMain.gameMain();
-        ControlMain.controlMain();
+public class Main {
+
+    public static void main(String[] args) {
+        //Ui Enhancement
+        // La interfaz grafica (JFrame) reemplaza el bucle de consola: pide el tamano
+        // de equipo desde la ventana y dibuja la batalla en tiempo real estilo pixel.
+        SwingUtilities.invokeLater(() -> {
+            GameView window = new GameView();
+            window.setVisible(true);
+        });
+        //Ui Enhancement
     }
 }
