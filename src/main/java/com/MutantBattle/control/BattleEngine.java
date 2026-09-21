@@ -66,7 +66,9 @@ public class BattleEngine {
 
     private MutantThread crearHilo(BaseMutant mutante, Team rival, EncounterDispatcher dispatcher) {
         return new MutantThread(mutante,
-                new Movement(mutante.getPosition(), constants.MUTANT_SPEED),
+                //Ui Enhancement
+                new Movement(mutante.getPosition(), constants.MUTANT_SPEED, battlefield.getObstacles()),
+                //Ui Enhancement
                 battlefield.getWidth(), battlefield.getHeight(),
                 rival, dispatcher, stepIntervalMillis);
     }
