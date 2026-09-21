@@ -3,6 +3,9 @@ package com.MutantBattle.control;
 import com.MutantBattle.config.constants;
 import com.MutantBattle.model.BaseMutant;
 import com.MutantBattle.ui.Console;
+//Ui Enhancement
+import com.MutantBattle.ui.EventLog;
+//Ui Enhancement
 import java.util.Random;
 
 public class Combat { // Clase que representa el combate entre mutantes
@@ -83,6 +86,10 @@ public class Combat { // Clase que representa el combate entre mutantes
 
         if (objetivo.getEnergy() < energiaAnterior) {
             Console.logEncounter(atacante, objetivo, dano);
+            //Ui Enhancement
+            EventLog.get().log(atacante.getName() + " hit " + objetivo.getName() + " for " + dano,
+                    atacante.getTeam() != null ? atacante.getTeam().getColor() : "");
+            //Ui Enhancement
             atacante.increasePower();
             if (atacante.getTeam() != null) {
                 atacante.getTeam().increaseScore(1);
@@ -91,6 +98,10 @@ public class Combat { // Clase que representa el combate entre mutantes
 
         if (!objetivo.isAlive()) {
             Console.logDeath(atacante, objetivo);
+            //Ui Enhancement
+            EventLog.get().log(atacante.getName() + " defeated " + objetivo.getName(),
+                    atacante.getTeam() != null ? atacante.getTeam().getColor() : "");
+            //Ui Enhancement
         }
     }
 

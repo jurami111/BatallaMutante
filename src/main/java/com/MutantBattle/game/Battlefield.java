@@ -1,6 +1,11 @@
 package com.MutantBattle.game;
 
 import com.MutantBattle.config.constants;// Importa las constantes de configuración del juego   
+//Ui Enhancement
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+//Ui Enhancement
 
 public class Battlefield {// Representa el campo de batalla donde se enfrentan dos equipos de mutantes
     // Constructor y métodos para gestionar el estado del campo de batalla
@@ -8,8 +13,18 @@ public class Battlefield {// Representa el campo de batalla donde se enfrentan d
     private final int height;
     private final Team team1;
     private final Team team2;
+    //Ui Enhancement
+    private final List<Obstacle> obstacles;
+    //Ui Enhancement
 
     public Battlefield(int width, int height, Team team1, Team team2) {//val1damos las dimensiones y los equipos
+        //Ui Enhancement
+        this(width, height, team1, team2, Collections.emptyList());
+        //Ui Enhancement
+    }
+
+    //Ui Enhancement
+    public Battlefield(int width, int height, Team team1, Team team2, List<Obstacle> obstacles) {
         validarDimensiones(width, height);
         validarEquipos(team1, team2);
         // Asignamos los valores validados a los atributos del campo de batalla
@@ -17,7 +32,13 @@ public class Battlefield {// Representa el campo de batalla donde se enfrentan d
         this.height = height;
         this.team1 = team1;
         this.team2 = team2;
+        this.obstacles = obstacles == null ? new ArrayList<>() : new ArrayList<>(obstacles);
     }
+
+    public List<Obstacle> getObstacles() { // Devuelve los obstaculos del entorno (inmodificable)
+        return Collections.unmodifiableList(obstacles);
+    }
+    //Ui Enhancement
 
     public int getWidth() { // Devuelve el ancho del campo de batalla
         return width;
